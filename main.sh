@@ -1,3 +1,11 @@
+if [ $(iwgetid -r | grep -c LPU) ]
+then
+    echo "Connected to LPU wifi"
+else
+    echo "Not connected to LPU wifi. Exiting."
+    exit 1
+fi
+
 username=$1
 password=$2
 
