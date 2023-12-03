@@ -1,4 +1,4 @@
-if [ $(iwgetid -r | grep -c LPU) ]
+if [ $(iwgetid -r | grep -c LPU) == 1 ]
 then
     echo "Connected to LPU wifi"
 else
