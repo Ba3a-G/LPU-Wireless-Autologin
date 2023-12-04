@@ -20,7 +20,9 @@ alias llogin="bash ~/path/to/main.sh <username> <password>"
 Now you just have to type `llogin` in your terminal to login to the network.
 
 ## To Do
-1. Make a similar script for Windows.
+1. Similar script for Windows
+2. Store credentials in env
+3. Multi account support (for people like [@saddexed](https://github.com/saddexed))
 
 ## Contributing
 Pull requests are always welcome. Feel free to add any new features or fix any bugs you find.
