@@ -15,11 +15,7 @@ then
     exit 1
 fi
 
-ips=$(hostname -I)
-arrIps=(${ips/ / })
-ip=${arrIps[0]}
-
-data="mode=191&ipaddress=$ip&username=$username%40lpu.com&password=$password"
+data="mode=191&username=$username%40lpu.com&password=$password"
 res=$(curl -s 'https://10.10.0.1/24online/servlet/E24onlineHTTPClient' --data-raw $data --compressed --insecure)
 
 # These morons are dumb enough to send a 200 OK even if the login fails

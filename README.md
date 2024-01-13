@@ -26,3 +26,7 @@ Now you just have to type `llogin` in your terminal to login to the network.
 
 ## Contributing
 Pull requests are always welcome. Feel free to add any new features or fix any bugs you find.
+
+```js
+var foo = "bar";
+```
