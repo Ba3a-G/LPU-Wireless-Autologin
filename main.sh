@@ -1,4 +1,4 @@
-if [ $(iwgetid -r | grep -c LPU) == 1 ]
+if [ $(nmcli -t -f active,ssid dev wifi | grep -E '^yes'| grep -c LPU) == 1 ]
 then
     echo "Connected to LPU wifi"
 else
