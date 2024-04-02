@@ -21,8 +21,9 @@ Now you just have to type `llogin` in your terminal to login to the network.
 
 ## To Do
 1. Similar script for Windows
-2. Store credentials in env
+2. ~~Store credentials in env~~
 3. Multi account support (for people like [@saddexed](https://github.com/saddexed))
+4. Automation using nmcli dispatcher script.
 
 ## Contributing
 Pull requests are always welcome. Feel free to add any new features or fix any bugs you find.
