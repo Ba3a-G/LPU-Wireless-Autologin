@@ -13,15 +13,15 @@ store_lpu_credentials() {
     read -sp "Enter your LPU password: " password
     echo
 
+    echo "LPU_USERNAME=\"$username\"" > ~/.env
+    echo "LPU_PASSWORD=\"$password\"" >> ~/.env
+
     if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ] || [ "$SHELL" = "bash" ]; then
-        echo "export LPU_USERNAME=\"$username\"" >> ~/.bashrc
-        echo "export LPU_PASSWORD=\"$password\"" >> ~/.bashrc
+        echo "source ~/.env" >> ~/.bashrc
     elif [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ] || [ "$SHELL" = "zsh" ]; then
-        echo "export LPU_USERNAME=\"$username\"" >> ~/.zshrc
-        echo "export LPU_PASSWORD=\"$password\"" >> ~/.zshrc
+        echo "source ~/.env" >> ~/.zshrc
     elif [ "$SHELL" = "/usr/bin/fish" ] || [ "$SHELL" = "/usr/bin/fish" ] || [ "$SHELL" = "fish" ]; then
-        echo "set -gx LPU_USERNAME \"$username\"" >> ~/.config/fish/config.fish
-        echo "set -gx LPU_PASSWORD \"$password\"" >> ~/.config/fish/config.fish
+        echo "source ~/.env" >> ~/.config/fish/config.fish
     else
         echo "Unsupported shell. Please manually set the environment variables."
     fi
