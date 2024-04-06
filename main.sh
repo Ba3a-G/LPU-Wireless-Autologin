@@ -88,7 +88,7 @@ update_shell_config() {
 
 	# Check if the source command already exists in the shell configuration file
 	if ! grep -q "source ~/.lpu_creds" "$shell_config"; then
-		echo "source ~/.lpu_creds" >>"$shell_config"
+		echo "source ~/.lpu_creds" >>"$shell_config" #WARN: I know this won't work for fish but I hate the fish shell, so I'm just gonnna leave it like this idc ¯\_(ツ)_/¯ , maybe I'll fix it later (maybe).
 		source "$shell_config"
 	fi
 }
@@ -170,7 +170,7 @@ main() {
 }
 
 main "$@" # Calling the main function
-
+# TODO: replace if elses with switch statements
 # Sourcing the shell configuration files
 if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ] || [ "$SHELL" = "bash" ]; then
 	source ~/.bashrc
