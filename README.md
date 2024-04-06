@@ -6,37 +6,54 @@ And no, you don't have to use Selenium like a frigging noob. This script uses `c
 
 Why am I writing nonsense here even though I have Computer Organisation and Design exam tomorrow? Because I am an idiot. I am going to fail anyway. So, why not write some nonsense? I am not even sure if anyone is going to read this. If you are reading this, then you are an idiot too. Just kidding. You are a genius. Now star this repo and follow me on [LinkedIn](#). And also on GitHub.
 
+## Features
+
+- Multi-account support: Store and manage credentials for multiple LPU WiFi accounts using unique identifiers.
+- Command-line options: Access various functionalities through command-line options, such as displaying help, version information, listing stored accounts, and logging in to a specific account.
+- Secure credential storage: Credentials are stored securely in a separate file (`~/.lpu_creds`) instead of being directly added to the shell configuration files or `.profile`.
+- Shell configuration updates: The script automatically updates the shell configuration files to source the credential file, ensuring seamless integration with the current shell session.
+
 ## Usage
 
-1. Run the script. It will first check if you are connected to LPU WiFi, if not, it will exit.
+1. Run the script without any arguments to prompt for an account ID and log in:
 
 ```bash
 chmod +x main.sh
 ./main.sh
 ```
 
-2. If you are connected to LPU WiFi, it will check if your LPU username and password are set. If not, it will prompt you to enter them. These credentials are stored securely in your `~/.profile` file.
+2. Use the available command-line options:
 
-3. Depending on the shell you are using (bash, zsh, or fish), it will add a line to source the `~/.profile` file in the appropriate shell configuration file (`~/.bashrc`, `~/.zshrc`, or `~/.config/fish/config.fish`).
+- `--help`: Display help information and usage instructions.
+- `--version`: Show the version information.
+- `--list`: List all stored account IDs.
+- `--account <account_id>`: Log in using the specified account ID.
+  Example:
 
-4. Finally, it will attempt to log you into the LPU WiFi. If successful, it will display a notification saying "Login successful". If not, it will display a notification saying "Login failed".
+```bash
+./main.sh --account myaccount
+```
 
-> Note: This script is designed to work with bash, zsh, and fish shells. If you are using a different shell, you will need to manually set the `LPU_USERNAME` and `LPU_PASSWORD` environment variables in your shell configuration file.
+3. If you don't have any stored credentials, the script will prompt you to enter a new account ID and the corresponding LPU username and password. These credentials will be securely stored for future use.
+4. The script will attempt to log you into the LPU WiFi using the provided or stored credentials. A notification will be displayed indicating the login status (success or failure).
 
-You can also create an alias for the script in your `.bashrc` or other terminal `.config` file to make it even simpler.
+> Note: This script is designed to work with bash, zsh, and fish shells. If you are using a different shell, you may need to manually set the environment variables or update the shell configuration file.
+
+You can also create an alias for the script in your `.bashrc` or other shell `.config` file to make it even simpler.
 
 ```bash
 alias llogin="bash ~/path/to/main.sh"
 ```
 
 Now you just have to type `llogin` in your terminal to login to the network.
+And you can also use the different arguments along with the alias.
 
 ## To Do
 
-1. Similar script for Windows
-2. ~~Store credentials in env~~
-3. Multi account support (for people like [@saddexed](https://github.com/saddexed))
-4. Automation using nmcli dispatcher script.
+1. [ ] Similar script for Windows
+2. [x] Store credentials in env
+3. [x] Multi account support (for people like [@saddexed](https://github.com/saddexed))
+4. [ ] ~~Automation using nmcli dispatcher script~~
 
 ## Contributing
 
