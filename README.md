@@ -4,7 +4,7 @@ A simple script to automate the login process of LPU Networks.
 
 And no, you don't have to use Selenium like a frigging noob. This script uses `curl` to send the login request to the server, which makes it _blazingly_ fast. It's so fast that you can't even see the login page. At this point you might be wondering, "Then how do I logout?". Well, you can't. But you can always restart your computer, which is also pretty good. No, just kidding. You can always logout by going to the login page and clicking on the logout button. It's not that hard.
 
-Why am I writing nonsense here even though I have Computer Organisation and Design exam tomorrow? Because I am an idiot. ~~I am going to fail anyway.~~ I passed. 🥳 So, why not write some nonsense? I am not even sure if anyone is going to read this. If you are reading this, then you are an idiot too. Just kidding. You are a genius. Now star this repo and follow me on [LinkedIn](#). And also on GitHub.
+Why am I writing nonsense here even though I have Computer Organisation and Design exam tomorrow? Because I am an idiot. ~~I am going to fail anyway.~~ I passed. 🥳 So, why not write some nonsense? I am not even sure if anyone is going to read this. If you are reading this, then you are an idiot too. Just kidding. You are a genius. Now star this repo and follow me on [LinkedIn](https://linkedin.com/in/ba3a). And also on GitHub.
 
 
 ## Features
