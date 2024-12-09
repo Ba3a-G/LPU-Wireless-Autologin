@@ -35,7 +35,7 @@ list_account_ids() {
 }
 
 check_lpu_wifi() {
-	if [ "$(nmcli -t -f active,ssid dev wifi | grep -E '^yes' | grep -c LPU)" == "1" ]; then
+	if [ "$(nmcli -t -f active,ssid dev wifi | grep -E '^yes' | grep -Ecm 1 '^(LPU|Block)\s')" == "1" ]; then
 		return 0
 	else
 		return 1
