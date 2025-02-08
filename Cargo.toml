@@ -1,0 +1,7 @@
+[package]
+name = "llogin"
+version = "1.3.0"
+edition = "2021"
+
+[dependencies]
+ureq = { version = "^2.6", features = ["native-tls"] }
