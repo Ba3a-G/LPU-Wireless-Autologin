@@ -1,3 +1,32 @@
+use dirs;
+pub mod types;
+
+fn get_config_path() -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
+    let home_dir = dirs::home_dir().ok_or("Cannot find home directory")?;
+    let config_dir = home_dir.join(".config").join("llogin");
+    let config_path = config_dir.join("config.toml");
+    Ok(config_path)
+}
+
+fn get_platform_config() -> Result<types::LloginConfiguration, Box<dyn std::error::Error>> {
+    let config_path = get_config_path()?;
+    let config_content = std::fs::read_to_string(config_path)?;
+    let config: types::LloginConfiguration = toml::from_str(&config_content)?;
+    Ok(config)
+}
+
+fn put_platform_config(config: &types::LloginConfiguration) -> Result<(), Box<dyn std::error::Error>> {
+    let config_path = get_config_path()?;
+    let config_content = toml::to_string(config)?;
+    if let Some(parent) = config_path.parent() {
+        if !parent.exists() {
+            std::fs::create_dir_all(parent)?;
+        }
+    }
+    std::fs::write(config_path, config_content)?;
+    Ok(())
+}
+
 fn login_to_wifi(uid: &String, pwd: &String) -> Result<(), Box<dyn std::error::Error>> {
     let data = format!("mode=191&username={}%40lpu.com&password={}", uid, pwd);
 
