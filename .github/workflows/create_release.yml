@@ -20,6 +20,6 @@ jobs:
           # (Optional) Format of title.
           # [default value: $tag]
           # [possible values: variables $tag, $version, and any string]
-          title: nightly ${{ github.ref }}
+          title: $tag
           # (Required) GitHub token for creating GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
