@@ -1,0 +1,96 @@
+name: Build and Release Rust CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+      release_name:
+        description: 'Name for the release'
+        default: 'CLI Release'
+        required: false
+        type: string
+      is_pre_release:
+        description: 'Is this a pre-release?'
+        default: false
+        required: false
+        type: boolean
+      draft_release:
+        description: 'Save as draft?'
+        default: false
+        required: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build Release
+        run: cargo build --release
+
+      - name: Prepare Binary
+        shell: bash
+        run: |
+          VERSION="${{ github.event.inputs.release_version }}"
+          BINARY_NAME="llogin"  # Replace with your CLI name
+          
+          case ${{ runner.os }} in
+            Linux)
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-linux"
+              cp target/release/$BINARY_NAME $ARTIFACT_NAME
+              ;;
+            Windows)
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-windows.exe"
+              cp target/release/$BINARY_NAME.exe $ARTIFACT_NAME
+              ;;
+            macOS)
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos"
+              cp target/release/$BINARY_NAME $ARTIFACT_NAME
+              ;;
+          esac
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_NAME }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Prepare Release Assets
+        shell: bash
+        run: |
+          mkdir -p release_assets
+          find artifacts -type f -exec cp {} release_assets/ \;
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.release_version }}
+          name: ${{ github.event.inputs.release_name }}
+          body: "CLI release ${{ github.event.inputs.release_version }}"
+          draft: ${{ github.event.inputs.draft_release }}
+          prerelease: ${{ github.event.inputs.is_pre_release }}
+          files: release_assets/*
