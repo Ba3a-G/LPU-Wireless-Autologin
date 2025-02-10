@@ -1,0 +1,25 @@
+name: Create Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - nightly
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          # (Optional)
+          changelog: CHANGELOG.md
+          # (Optional) Format of title.
+          # [default value: $tag]
+          # [possible values: variables $tag, $version, and any string]
+          title: nightly ${{ github.ref }}
+          # (Required) GitHub token for creating GitHub Releases.
+          token: ${{ secrets.GITHUB_TOKEN }}
