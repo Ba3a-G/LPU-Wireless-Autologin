@@ -22,7 +22,7 @@ type Result<T> = std::result::Result<T, AppError>;
 #[derive(Parser)]
 #[command(name = "llogin")]
 #[command(author = "Aryan K")]
-#[command(version = "2.0.1")]
+#[command(version = "2.0.2")]
 #[command(about = "LPU WiFi manager")]
 struct Cli {
     #[command(subcommand)]

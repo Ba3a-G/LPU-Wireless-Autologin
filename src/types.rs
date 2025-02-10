@@ -20,7 +20,7 @@ pub struct LloginConfiguration {
 impl LloginConfiguration {
     pub fn default() -> Self {
         LloginConfiguration {
-            version: Some("2.0.1".to_string()),
+            version: Some("2.0.2".to_string()),
             telemetry: Some(true),
             manifest: Some("default_manifest".to_string()),
             update_url: Some("https://github.com".to_string()),
