@@ -1,4 +1,4 @@
-name: Create Release
+name: Release
 
 permissions:
   contents: write
@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     tags:
-      - 'nightly-*'
+      - n[0-9]+.*
 
 jobs:
   create-release:
@@ -16,8 +16,7 @@ jobs:
       - uses: taiki-e/create-gh-release-action@v1
         with:
           # (Optional)
-          changelog: CHANGELOG.md
-          # (Optional) Format of title. 
+          # (Optional) Format of title.
           # [default value: $tag]
           # [possible values: variables $tag, $version, and any string]
           title: $tag
