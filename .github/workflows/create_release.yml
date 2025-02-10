@@ -4,8 +4,9 @@ permissions:
   contents: write
 
 on:
-  pull_request:
-    branches: [ "nightly" ]
+  push:
+    tags:
+      - 'nightly-*'
 
 jobs:
   create-release:
