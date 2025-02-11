@@ -31,7 +31,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        arch: [x86_64, aarch64]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -40,11 +39,8 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Set up target
-        run: rustup target add ${{ matrix.arch }}-unknown-linux-gnu
-
       - name: Build Release
-        run: cargo build --release --target ${{ matrix.arch }}-unknown-linux-gnu
+        run: cargo build --release
 
       - name: Prepare Binary
         shell: bash
@@ -54,16 +50,16 @@ jobs:
           
           case ${{ runner.os }} in
             Linux)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-linux-${{ matrix.arch }}"
-              cp target/${{ matrix.arch }}-unknown-linux-gnu/release/$BINARY_NAME $ARTIFACT_NAME
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-linux"
+              cp target/release/$BINARY_NAME $ARTIFACT_NAME
               ;;
             Windows)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-windows-${{ matrix.arch }}.exe"
-              cp target/${{ matrix.arch }}-pc-windows-gnu/release/$BINARY_NAME.exe $ARTIFACT_NAME
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-windows.exe"
+              cp target/release/$BINARY_NAME.exe $ARTIFACT_NAME
               ;;
             macOS)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos-${{ matrix.arch }}"
-              cp target/${{ matrix.arch }}-apple-darwin/release/$BINARY_NAME $ARTIFACT_NAME
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos"
+              cp target/release/$BINARY_NAME $ARTIFACT_NAME
               ;;
           esac
           echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
