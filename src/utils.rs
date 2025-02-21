@@ -72,7 +72,7 @@ pub fn login_to_wifi(uid: &String, pwd: &String) -> Result<(), Box<dyn std::erro
         .build();
 
     let response = client
-        .post("https://internet.lpu.in/24online/servlet/E24onlineHTTPClient")
+        .post("https://10.10.0.1/24online/servlet/E24onlineHTTPClient")
         .set("Content-Type", "application/x-www-form-urlencoded")
         .send_string(&data);
 
