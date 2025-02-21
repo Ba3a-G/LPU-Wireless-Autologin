@@ -50,15 +50,15 @@ jobs:
           
           case ${{ runner.os }} in
             Linux)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-linux"
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-linux-x86_64"
               cp target/release/$BINARY_NAME $ARTIFACT_NAME
               ;;
             Windows)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-windows.exe"
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-windows-x86_64.exe"
               cp target/release/$BINARY_NAME.exe $ARTIFACT_NAME
               ;;
             macOS)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos"
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macosaarch64"
               cp target/release/$BINARY_NAME $ARTIFACT_NAME
               ;;
           esac
