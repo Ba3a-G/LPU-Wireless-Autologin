@@ -58,7 +58,7 @@ jobs:
               cp target/release/$BINARY_NAME.exe $ARTIFACT_NAME
               ;;
             macOS)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macosaarch64"
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos-aarch64"
               cp target/release/$BINARY_NAME $ARTIFACT_NAME
               ;;
           esac
