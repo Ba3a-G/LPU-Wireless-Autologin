@@ -1,2 +1,4 @@
 logfile
 test.sh
+/target
+.env
