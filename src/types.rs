@@ -15,6 +15,7 @@ pub struct LloginConfiguration {
     pub last_updated: Option<String>,
     pub error_count: Option<u32>,
     pub accounts: Vec<Account>,
+    pub auto_mode: Option<bool>,
 }
 
 impl LloginConfiguration {
@@ -27,6 +28,7 @@ impl LloginConfiguration {
             last_updated: Some("1973-01-01".to_string()),
             error_count: Some(0),
             accounts: vec![],
+            auto_mode: Some(false),
         }
     }
 }

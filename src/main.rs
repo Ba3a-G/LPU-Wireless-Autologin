@@ -27,9 +27,9 @@ type Result<T> = std::result::Result<T, AppError>;
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
-    /// If not set, I will use the first account in the list.
+    /// If set, I will use the first account in the list.
     #[arg(short, long, default_value = "false")]
-    interactive: bool,
+    auto: bool,
 }
 
 #[derive(Subcommand)]
@@ -58,6 +58,11 @@ enum Commands {
     /// Enable/disable telemetry
     Telemetry {
         /// Enable or disable telemetry
+        enabled: Option<bool>,
+    },
+    /// Set auto mode
+    Auto {
+        /// Enable or disable auto mode
         enabled: Option<bool>,
     },
     /// Update the application
@@ -260,7 +265,17 @@ impl App {
         Ok(())
     }
 
-    fn handle_default(&mut self, is_interactive: bool) -> Result<()> {
+    fn set_auto_mode(&mut self, enabled: Option<bool>) -> Result<()> {
+        if let Some(_) = enabled {
+            self.config.auto_mode = enabled;
+            utils::put_platform_config(&self.config)
+                .map_err(|e| AppError::ConfigError(e.to_string()))?;
+            println!("Auto mode settings updated");
+        }
+        Ok(())
+    }
+
+    fn handle_default(&mut self, is_auto: bool) -> Result<()> {
         if self.config.accounts.is_empty() {
             println!("No saved accounts found. Please enter your credentials.");
             let uid = self.prompt_username()?;
@@ -268,7 +283,7 @@ impl App {
             return self.handle_auth(&uid, Some(password));
         }
     
-        if !is_interactive {
+        if is_auto || self.config.auto_mode.unwrap_or(false) {
             let account = &self.config.accounts[0];
             println!("Logging in with saved account: {}", account.uid);
             return self.handle_auth(&account.uid.clone(), Some(account.pwd.clone()));
@@ -331,6 +346,9 @@ fn main() -> Result<()> {
         Some(Commands::Telemetry { enabled }) => {
             app.set_telemetry(enabled)?;
         }
+        Some(Commands::Auto { enabled }) => {
+            app.set_auto_mode(enabled)?;
+        }
         Some(Commands::Reorder) => {
             app.reorder_account_priorities()?;
         }
@@ -338,7 +356,7 @@ fn main() -> Result<()> {
             println!("Upgrade functionality not implemented yet");
         }
         None => {
-            app.handle_default(cli.interactive)?;
+            app.handle_default(cli.auto)?;
         }
     }
     Ok(())
