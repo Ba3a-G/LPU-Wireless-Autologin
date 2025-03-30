@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ba3a.llogin</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>if system_profiler SPAirPortDataType | awk '/Current Network/ {getline;$1=$1; gsub(":",""); if($0 ~ /^LPU/ || $0 ~ /^Block/){print;exit 0}else{exit 1}}'; then /usr/local/bin/llogin || osascript -e 'display notification "Login attempt failed" with title "WiFi Login" sound name "Basso"'; else exit 0; fi</string>
+    </array>
+    
+    <key>StartInterval</key>
+    <integer>1500</integer>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>StandardOutPath</key>
+    <string>~/Library/Logs/llogin.log</string>
+    <key>StandardErrorPath</key>
+    <string>~/Library/Logs/llogin.error.log</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
