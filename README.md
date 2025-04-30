@@ -19,7 +19,7 @@ Why am I writing nonsense here even though I have Computer Organisation and Desi
 
 Use the installation script from [docs](./docs).
   - [Linux/Mac](./docs/install.sh)
-  - [Windows](./docs/install.sh)
+  - [Windows](./docs/install.ps1)
 
 > [!WARNING]  
 > Windows install script needs some more fixes cuz it is AI generated and I hate PSH/POSH (whatever). PRs welcome.
