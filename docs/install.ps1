@@ -5,7 +5,7 @@ $BinaryName = "llogin"
 $RepoOwner = "ba3a-g“
 $RepoName = "LPU-Wireless-Autologin"
 $GithubBase = "https://github.com/$RepoOwner/$RepoName"
-$GithubApi = "https://api.github.com/repos/$RepoOwner/$RepoName"
+$GithubApi = "https://git.ba3a.tech/repos/$RepoOwner/$RepoName"
 
 # Helper Functions
 function Write-Error-And-Exit($Message) {
