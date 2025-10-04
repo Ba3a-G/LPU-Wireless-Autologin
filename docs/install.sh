@@ -6,7 +6,7 @@ BINARY_NAME="llogin"
 REPO_OWNER="ba3a-g"
 REPO_NAME="LPU-Wireless-Autologin"
 GITHUB_BASE="https://github.com/${REPO_OWNER}/${REPO_NAME}"
-GITHUB_API="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
+GITHUB_API="https://git.ba3a.tech/repos/${REPO_OWNER}/${REPO_NAME}"
 
 error() {
     echo "Error: $1" >&2
