@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 # Constants
 $BinaryName = "llogin"
-$RepoOwner = "ba3a-g“
+$RepoOwner = "ba3a-g"
 $RepoName = "LPU-Wireless-Autologin"
 $GithubBase = "https://github.com/$RepoOwner/$RepoName"
 $GithubApi = "https://git.ba3a.tech/repos/$RepoOwner/$RepoName"
