@@ -24,7 +24,7 @@ impl LloginConfiguration {
             version: Some("2.0.1".to_string()),
             telemetry: Some(true),
             manifest: Some("default_manifest".to_string()),
-            update_url: Some("https://github.com".to_string()),
+            update_url: Some("https://github.com/ba3a-g/LPU-Wireless-Autologin".to_string()),
             last_updated: Some("1973-01-01".to_string()),
             error_count: Some(0),
             accounts: vec![],

@@ -65,8 +65,22 @@ enum Commands {
         /// Enable or disable auto mode
         enabled: Option<bool>,
     },
-    /// Update the application
-    Upgrade,
+}
+
+/// Strip the @domain suffix from a raw uid string. Returns empty string for
+/// inputs like "@lpu.com" where there is nothing before the @.
+fn strip_uid_domain(raw: &str) -> String {
+    raw.split('@').next().unwrap_or("").trim().to_string()
+}
+
+/// Strip @domain suffix and validate the result is non-empty.
+/// All user-facing entry points (CLI args, prompts) funnel through here.
+fn normalize_uid(raw: &str) -> Result<String> {
+    let uid = strip_uid_domain(raw);
+    if uid.is_empty() {
+        return Err(AppError::InputError("Username cannot be empty".into()));
+    }
+    Ok(uid)
 }
 
 struct App {
@@ -75,21 +89,53 @@ struct App {
 
 impl App {
     fn new() -> Result<Self> {
-        let config =
+        let mut config =
             utils::get_platform_config().map_err(|e| AppError::ConfigError(e.to_string()))?;
+
+        // Normalize legacy uids that were stored with an @domain suffix (e.g. "12345678@lpu.com").
+        let mut migrated = false;
+        for account in &mut config.accounts {
+            if account.uid.contains('@') {
+                // strip_uid_domain (not normalize_uid) so empty results like "@lpu.com"
+                // survive as "" and are cleaned up by the retain() below.
+                account.uid = strip_uid_domain(&account.uid);
+                migrated = true;
+            }
+        }
+        // Remove degenerate accounts whose uid is empty after stripping (e.g. stored as "@lpu.com").
+        let before_len = config.accounts.len();
+        config.accounts.retain(|a| !a.uid.is_empty());
+        if config.accounts.len() < before_len {
+            eprintln!(
+                "Warning: removed {} account(s) with empty username from config.",
+                before_len - config.accounts.len()
+            );
+            migrated = true;
+        }
+        if migrated {
+            // Non-fatal: if the write fails (read-only FS, wrong permissions) the tool
+            // continues with the in-memory migrated config. Migration will re-run next
+            // startup but that is harmless.
+            if let Err(e) = utils::put_platform_config(&config) {
+                eprintln!("Warning: could not save migrated config: {}", e);
+            }
+        }
+
         Ok(Self { config })
     }
 
-    fn handle_auth(&mut self, uid: &String, password: Option<String>) -> Result<()> {
+    fn handle_auth(&mut self, uid: &str, password: Option<String>) -> Result<()> {
+        let uid = normalize_uid(uid)?;
+
         let password = match password {
             Some(pwd) => pwd,
-            None => self.get_or_prompt_password(uid)?,
+            None => self.get_or_prompt_password(&uid)?,
         };
 
-        utils::login_to_wifi(uid, &password).map_err(|e| AppError::AuthError(e.to_string()))?;
+        utils::login_to_wifi(&uid, &password).map_err(|e| AppError::AuthError(e.to_string()))?;
 
         println!("Logged in successfully");
-        self.maybe_save_account(uid, &password)?;
+        self.maybe_save_account(&uid, &password)?;
         Ok(())
     }
 
@@ -318,11 +364,13 @@ impl App {
         let question = Question::input("username")
             .message("Enter your username:")
             .build();
-    
-        requestty::prompt_one(question)
+
+        let raw = requestty::prompt_one(question)
             .map_err(|e| AppError::InputError(e.to_string()))?
             .try_into_string()
-            .map_err(|_| AppError::InputError("Invalid username input".into()))
+            .map_err(|_| AppError::InputError("Invalid username input".into()))?;
+
+        normalize_uid(&raw)
     }
 }
 
@@ -338,9 +386,11 @@ fn main() -> Result<()> {
             app.list_accounts();
         }
         Some(Commands::Remove { username }) => {
+            let username = username.map(|s| normalize_uid(&s)).transpose()?;
             app.remove_account(username)?;
         }
         Some(Commands::Update { username }) => {
+            let username = username.map(|s| normalize_uid(&s)).transpose()?;
             app.update_account(username)?;
         }
         Some(Commands::Telemetry { enabled }) => {
@@ -351,9 +401,6 @@ fn main() -> Result<()> {
         }
         Some(Commands::Reorder) => {
             app.reorder_account_priorities()?;
-        }
-        Some(Commands::Upgrade) => {
-            println!("Upgrade functionality not implemented yet");
         }
         None => {
             app.handle_default(cli.auto)?;

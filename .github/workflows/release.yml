@@ -58,7 +58,10 @@ jobs:
               cp target/release/$BINARY_NAME.exe $ARTIFACT_NAME
               ;;
             macOS)
-              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos-aarch64"
+              ARCH="$(uname -m)"
+              # Darwin reports arm64; normalise to aarch64 to match install.sh expectations.
+              [ "$ARCH" = "arm64" ] && ARCH="aarch64"
+              ARTIFACT_NAME="$BINARY_NAME-$VERSION-macos-$ARCH"
               cp target/release/$BINARY_NAME $ARTIFACT_NAME
               ;;
           esac
