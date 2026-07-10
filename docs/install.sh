@@ -63,15 +63,10 @@ install_binary() {
     local temp_file="${temp_dir}/${binary_name}"
 
     echo "Downloading ${BINARY_NAME} v${VERSION} for ${OS}-${ARCH}..."
-    
-    if ! curl -fsSL -I "$download_url" >/dev/null 2>&1; then
-        rm -rf "$temp_dir"
-        error "Release v${VERSION} not found or asset unavailable"
-    fi
 
     if ! curl -fsSL "$download_url" -o "$temp_file"; then
         rm -rf "$temp_dir"
-        error "Failed to download binary"
+        error "Failed to download binary. Check that release v${VERSION} exists for ${OS}-${ARCH}."
     fi
 
     chmod +x "$temp_file"
